@@ -7,7 +7,7 @@ Fixes are more than welcome for this :)
 ## Instructions
 
 * Clone this repository
-* Copy `LooseAnnotations`` dir to your `App` dir
+* Copy `LooseAnnotations` dir to your `App` dir
 * Configure l5-swagger package accordingly
 
 Check your generated Swagger API Documentation to see OAuth stuff :)

@@ -244,13 +244,17 @@ namespace App\LooseAnnotations;
 /**
  * @OA\Post(
  *      path="/oauth/token",
- *      summary="Requests a refresh token",
+ *      summary="Request access token",
+ *      description="User can request access token with their password or refresh token",
  *      tags={"OAuth"},
  *      operationId="refreshToken",
  *      requestBody={"$ref": "#/components/requestBodies/TokenRequest"},
  *      @OA\Response(
  *          response=200,
  *          description="successful operation",
+ *          @OA\JsonContent(
+ *                  ref="#/components/schemas/TokenResponse"
+ *          )
  *      )
  * )
  */
@@ -265,7 +269,7 @@ namespace App\LooseAnnotations;
  *          response=200,
  *          description="successful operation",
  *          @OA\Schema(
- *              type="array",
+ *              type="object",
  *              @OA\Items(ref="#/components/schemas/Token")
  *          )
  *      )
@@ -544,7 +548,7 @@ class ClientRequest
 /**
  * @OA\RequestBody(
  *      request="TokenRequest",
- *      description="...",
+ *      description="Request access token with password or refresh token",
  *      required=true,
  *      @OA\JsonContent(ref="#/components/schemas/TokenRequest")
  * )
@@ -555,69 +559,99 @@ class TokenRequest
     /**
      * @OA\Schema(
      *     schema="TokenRequest",
-     * @OA\Parameter(
-     *          name="grant_type",
-     *          in="formData",
+     *     title="Token Request",
+     *     description="Request body for requesting access token. Use grant type to define which authentication method is used.",
+     *     required={
+     *          "grant_type",
+     *          "client_id",
+     *          "client_secret",
+     *          "scope",
+     *     },
+     * @OA\Property(
+     *          title="Grant type",
+     *          property="grant_type",
      *          description="refresh_token or password",
-     *          required=true,
-     *          @OA\Schema(
-     *              type="string"
-     *          )
+     *          type="string",
+     *          enum={"refresh_token", "password"}
      *      ),
-     * @OA\Parameter(
-     *          name="client_id",
-     *          in="formData",
+     * @OA\Property(
+     *          title="Client ID",
+     *          property="client_id",
      *          description="OAuth Client ID",
-     *          required=true,
-     *          @OA\Schema(
-     *              type="string"
-     *          )
+     *          type="string"
      *      ),
-     * @OA\Parameter(
-     *          name="client_secret",
-     *          in="formData",
+     * @OA\Property(
+     *          title="Client secret",
+     *          property="client_secret",
      *          description="OAuth Client Secret",
-     *          required=true,
-     *          @OA\Schema(
-     *              type="string"
-     *          )
+     *          type="string"
      *      ),
-     * @OA\Parameter(
-     *          name="scope",
-     *          in="query",
+     * @OA\Property(
+     *          title="Scope",
+     *          property="scope",
      *          description="What scopes are requested, for all, use '*'",
-     *          required=true,
-     *          @OA\Schema(
-     *              type="string"
-     *          )
+     *          type="string"
      *      ),
-     * @OA\Parameter(
-     *          name="refresh_token",
-     *          in="formData",
+     * @OA\Property(
+     *          title="Refresh token",
+     *          property="refresh_token",
      *          description="Refresh_token from the authorization response",
-     *          required=false,
-     *          @OA\Schema(
-     *              type="string"
-     *          )
+     *          type="string"
      *      ),
-     * @OA\Parameter(
-     *          name="username",
-     *          in="formData",
+     * @OA\Property(
+     *          title="User name",
+     *          property="username",
      *          description="Username for login",
-     *          required=false,
-     *          @OA\Schema(
-     *              type="string"
-     *          )
+     *          type="string"
      *      ),
-     * @OA\Parameter(
-     *          name="password",
-     *          in="formData",
+     * @OA\Property(
+     *          title="password",
+     *          property="password",
      *          description="Password for the user",
-     *          required=false,
-     *          @OA\Schema(
-     *              type="string"
-     *          )
+     *          type="string"
      *      ),
      *  )
+     */
+}
+
+class TokenResponse
+{
+    /**
+     * @OA\Schema(
+     *     schema="TokenResponse",
+     *     title="Token Response",
+     *     description="Response body when requesting access token.",
+     *     required={
+     *          "token_type",
+     *          "expires_in",
+     *          "access_token",
+     *          "refresh_token",
+     *     },
+     * @OA\Property(
+     *          title="Token type",
+     *          property="token_type",
+     *          description="For example Bearer token type",
+     *          type="string",
+     *          enum={"Bearer"}
+     *      ),
+     * @OA\Property(
+     *          title="Expires in",
+     *          property="expires_in",
+     *          description="Token expires in this many seconds",
+     *          type="string"
+     *      ),
+     * @OA\Property(
+     *          title="Access token",
+     *          property="access_token",
+     *          description="Access token",
+     *          type="string"
+     *      ),
+     * @OA\Property(
+     *          title="Refresh token",
+     *          property="refresh_token",
+     *          description="Token used for refreshing access",
+     *          type="string"
+     *      ),
+     * )
      */
 }

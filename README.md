@@ -1,4 +1,4 @@
-# OpenAPI 3.0 Annotations for Laravel Passport 4
+# OpenAPI 3.0 Annotations for Laravel Passport 7
 
 For the time being this is a bit untested work for Laravel Passport to get OpenAPI OAuth definitions done.
 

@@ -5,7 +5,7 @@ namespace App\LooseAnnotations;
 // ====== Security
 
 /**
- * @SWG\SecurityScheme(
+ * @OA\SecurityScheme(
  *   securityDefinition="oauth_password",
  *   type="oauth2",
  *   tokenUrl=API_TOKEN_AUTHORIZATION_URL,
@@ -17,7 +17,7 @@ namespace App\LooseAnnotations;
  */
 
 /**
- * @SWG\SecurityScheme(
+ * @OA\SecurityScheme(
  *   securityDefinition="oauth_implicit",
  *   type="oauth2",
  *   authorizationUrl=API_IMPLICIT_AUTHORIZATION_URL,
@@ -29,7 +29,7 @@ namespace App\LooseAnnotations;
  */
 
 /**
- * @SWG\SecurityScheme(
+ * @OA\SecurityScheme(
  *   securityDefinition="oauth_client_credentials",
  *   type="oauth2",
  *   authorizationUrl=API_TOKEN_AUTHORIZATION_URL,
@@ -41,7 +41,7 @@ namespace App\LooseAnnotations;
  */
 
 /**
- * @SWG\SecurityScheme(
+ * @OA\SecurityScheme(
  *   securityDefinition="oauth_client_authorization_code",
  *   type="oauth2",
  *   authorizationUrl=API_TOKEN_AUTHORIZATION_URL,
@@ -55,67 +55,57 @@ namespace App\LooseAnnotations;
 // ====== Urls
 
 /**
- *  @SWG\Get(
+ *  @OA\Get(
  *      path="/oauth/clients",
  *      summary="Returns all clients for authenticated user",
  *      tags={"OAuth"},
  *      operationId="getClients",
- *      @SWG\Response(
+ *      @OA\Response(
  *          response=200,
  *          description="successful operation",
- *          @SWG\Schema(
+ *          @OA\Schema(
  *              type="object",
- *              ref="#/definitions/Client"
+ *              ref="#/components/schemas/Client"
  *          )
  *      )
  *  )
  */
 
 /**
- *  @SWG\Post(
+ *  @OA\Post(
  *      path="/oauth/clients",
  *      summary="Creates new client",
  *      tags={"OAuth"},
  *      operationId="createClient",
- *      @SWG\Parameter(
- *         name="body",
- *         in="body",
- *         description="Client, requires only name and redirect",
- *         required=true,
- *         @SWG\Schema(ref="#/definitions/Client"),
- *     ),
- *      @SWG\Response(
+ *      requestBody={"$ref": "#/components/requestBodies/ClientRequest"},
+ *      @OA\Response(
  *          response=200,
  *          description="successful operation",
- *          @SWG\Schema(
+ *          @OA\Schema(
  *              type="object",
- *              ref="#/definitions/Client",
+ *              ref="#/components/schemas/Client",
  *          )
  *      )
  *  )
  */
 
 /**
- *  @SWG\Put(
+ *  @OA\Put(
  *      path="/oauth/clients/{client_id}",
  *      summary="Update client",
  *      tags={"OAuth"},
  *      operationId="updateClient",
- *      @SWG\Parameter(
+ *      @OA\Parameter(
  *          name="client_id",
  *          in="path",
  *          description="",
  *          required=true,
- *          type="integer"
+ *          @OA\Schema(
+ *              type="integer"
+ *          )
  *      ),
- *      @SWG\Parameter(
- *         name="body",
- *         in="body",
- *         description="Only name and redirect can be updated",
- *         required=true,
- *         @SWG\Schema(ref="#/definitions/Client"),
- *     ),
- *      @SWG\Response(
+ *      requestBody={"$ref": "#/components/requestBodies/ClientRequest"},
+ *      @OA\Response(
  *          response=200,
  *          description="successful operation",
  *      )
@@ -123,19 +113,21 @@ namespace App\LooseAnnotations;
  */
 
 /**
- *  @SWG\Delete(
+ *  @OA\Delete(
  *      path="/oauth/clients/{client_id}",
  *      summary="Delete client",
  *      tags={"OAuth"},
  *      operationId="deleteClient",
- *      @SWG\Parameter(
+ *      @OA\Parameter(
  *          name="client_id",
  *          in="path",
  *          description="",
  *          required=true,
- *          type="integer"
+ *          @OA\Schema(
+ *              type="integer"
+ *          )
  *      ),
- *      @SWG\Response(
+ *      @OA\Response(
  *          response=200,
  *          description="successful operation",
  *      )
@@ -151,44 +143,49 @@ namespace App\LooseAnnotations;
  */
 
 /**
- * @SWG\Get(
+ * @OA\Get(
  *      path="/oauth/authorize",
  *      summary="Request authorization code html page",
  *      tags={"OAuth"},
  *      operationId="getAuthorizationPage",
- *      @SWG\Parameter(
+ *      @OA\Parameter(
  *          name="client_id",
  *          in="query",
  *          description="OAuth Client ID",
  *          required=true,
- *          type="string"
+ *          @OA\Schema(
+ *              type="string"
+ *          )
  *      ),
- *      @SWG\Parameter(
+ *      @OA\Parameter(
  *          name="redirect_uri",
  *          in="query",
  *          description="Where to redirect after authorization",
  *          required=true,
- *          type="string"
+ *          @OA\Schema(
+ *              type="string"
+ *          )
  *      ),
- *      @SWG\Parameter(
+ *      @OA\Parameter(
  *          name="response_type",
  *          in="query",
  *          description="",
  *          required=true,
- *          type="string",
- *          @SWG\Items(
+ *          @OA\Items(
  *             type="string",
  *             enum={"token", "code"}
  *         )
  *      ),
- *      @SWG\Parameter(
+ *      @OA\Parameter(
  *          name="scope",
  *          in="query",
  *          description="What scopes are requested",
  *          required=true,
- *          type="string"
+ *          @OA\Schema(
+ *              type="string"
+ *          )
  *      ),
- *      @SWG\Response(
+ *      @OA\Response(
  *          response=200,
  *          description="successful operation",
  *      )
@@ -196,48 +193,39 @@ namespace App\LooseAnnotations;
  */
 
 /**
- *  @SWG\Post(
+ *  @OA\Post(
  *      path="/oauth/authorize",
  *      summary="OAuth authorization",
  *      tags={"OAuth"},
  *      operationId="authorize",
- *      @SWG\Parameter(
- *         name="formData",
- *         in="formData",
- *         type="array",
- *         description="Should be client object as form data array",
- *         required=true,
- *         @SWG\Items(ref="#/definitions/Client"),
- *         @SWG\Schema(
- *              type="object",
- *              @SWG\Items(ref="#/definitions/Client")
- *         )
- *     ),
- *      @SWG\Response(
+ *      requestBody={"$ref": "#/components/requestBodies/Client"},
+ *      @OA\Response(
  *          response=200,
  *          description="successful operation",
- *          @SWG\Schema(
+ *          @OA\Schema(
  *              type="object",
- *              ref="#/definitions/Client",
+ *              ref="#/components/schemas/Client",
  *          )
  *      )
  *  )
  */
 
 /**
- *  @SWG\Delete(
+ *  @OA\Delete(
  *      path="/oauth/authorize/{client_id}",
  *      summary="Deny the authorization request",
  *      tags={"OAuth"},
  *      operationId="denyAuthorization",
- *      @SWG\Parameter(
+ *      @OA\Parameter(
  *          name="client_id",
  *          in="path",
  *          description="",
  *          required=true,
- *          type="integer"
+ *          @OA\Schema(
+ *              type="integer"
+ *          )
  *      ),
- *      @SWG\Response(
+ *      @OA\Response(
  *          response=200,
  *          description="successful operation",
  *      )
@@ -254,98 +242,56 @@ namespace App\LooseAnnotations;
  */
 
 /**
- * @SWG\Post(
+ * @OA\Post(
  *      path="/oauth/token",
- *      summary="Requests a refresh token",
+ *      summary="Request access token",
+ *      description="User can request access token with their password or refresh token",
  *      tags={"OAuth"},
  *      operationId="refreshToken",
- *      @SWG\Parameter(
- *          name="grant_type",
- *          in="formData",
- *          description="refresh_token or password",
- *          required=true,
- *          type="string"
- *      ),
- *      @SWG\Parameter(
- *          name="client_id",
- *          in="formData",
- *          description="OAuth Client ID",
- *          required=true,
- *          type="string"
- *      ),
- *      @SWG\Parameter(
- *          name="client_secret",
- *          in="formData",
- *          description="OAuth Client Secret",
- *          required=true,
- *          type="string"
- *      ),
- *      @SWG\Parameter(
- *          name="scope",
- *          in="query",
- *          description="What scopes are requested, for all, use '*'",
- *          required=true,
- *          type="string"
- *      ),
- *      @SWG\Parameter(
- *          name="refresh_token",
- *          in="formData",
- *          description="Refresh_token from the authorization response",
- *          required=false,
- *          type="string"
- *      ),
- *      @SWG\Parameter(
- *          name="username",
- *          in="formData",
- *          description="Username for login",
- *          required=false,
- *          type="string"
- *      ),
- *      @SWG\Parameter(
- *          name="password",
- *          in="formData",
- *          description="Password for the user",
- *          required=false,
- *          type="string"
- *      ),
- *      @SWG\Response(
+ *      requestBody={"$ref": "#/components/requestBodies/TokenRequest"},
+ *      @OA\Response(
  *          response=200,
  *          description="successful operation",
+ *          @OA\JsonContent(
+ *                  ref="#/components/schemas/TokenResponse"
+ *          )
  *      )
  * )
  */
 
 /**
- *  @SWG\Get(
+ *  @OA\Get(
  *      path="/oauth/tokens",
  *      summary="Returns all client's tokens for authenticated user",
  *      tags={"OAuth"},
  *      operationId="getTokens",
- *      @SWG\Response(
+ *      @OA\Response(
  *          response=200,
  *          description="successful operation",
- *          @SWG\Schema(
- *              type="array",
- *              @SWG\Items(ref="#/definitions/Token")
+ *          @OA\Schema(
+ *              type="object",
+ *              @OA\Items(ref="#/components/schemas/Token")
  *          )
  *      )
  *  )
  */
 
 /**
- *  @SWG\Delete(
+ *  @OA\Delete(
  *      path="/oauth/token/{token_id}",
  *      summary="Deny the token",
  *      tags={"OAuth"},
  *      operationId="denyToken",
- *      @SWG\Parameter(
+ *      @OA\Parameter(
  *          name="token_id",
  *          in="path",
  *          description="",
  *          required=true,
- *          type="integer"
+ *          @OA\Schema(
+ *              type="integer"
+ *          )
  *      ),
- *      @SWG\Response(
+ *      @OA\Response(
  *          response=200,
  *          description="successful operation",
  *      )
@@ -359,24 +305,18 @@ namespace App\LooseAnnotations;
  */
 
 /**
- *  @SWG\Post(
+ *  @OA\Post(
  *      path="/oauth/token/refresh",
  *      summary="Get a fresh transient token cookie for the authenticated user",
  *      tags={"OAuth"},
  *      operationId="tokenRefresh",
- *      @SWG\Parameter(
- *         name="body",
- *         in="body",
- *         description="Client, requires only name and redirect",
- *         required=true,
- *         @SWG\Schema(ref="#/definitions/Client"),
- *     ),
- *      @SWG\Response(
+ *      requestBody={"$ref": "#/components/requestBodies/ClientRequest"},
+ *      @OA\Response(
  *          response=200,
  *          description="successful operation",
- *          @SWG\Schema(
+ *          @OA\Schema(
  *              type="object",
- *              ref="#/definitions/Client",
+ *              ref="#/components/schemas/Client",
  *          )
  *      )
  *  )
@@ -394,10 +334,19 @@ namespace App\LooseAnnotations;
 // Models
 
 /**
+ * @OA\RequestBody(
+ *      request="Client",
+ *      description="Client",
+ *      required=true,
+ *      @OA\JsonContent(ref="#/components/schemas/Client")
+ * )
+ */
+
+/**
  * @see vendor/laravel/passport/src/Client.php
  *
- * @SWG\Definition(
- *   definition="Client",
+ * @OA\Schema(
+ *   schema="Client",
  *   required={},
  *   type="object"
  * )
@@ -405,44 +354,48 @@ namespace App\LooseAnnotations;
 class Client
 {
     /**
-     * @SWG\Property(
+     * @OA\Property(
      *     type="integer",
      *     property="id",
      *     description="Id.",
      *     example="300",
      *     readOnly=true
      * )
-     * @SWG\Property(
+     * @OA\Property(
      *     type="integer",
      *     property="user_id",
      *     description="User Id",
      *     example="3000",
      * )
-     * @SWG\Property(
-     *     type="string",
+     * @OA\Property(
+     *      *          @OA\Schema(
+     *              type="string"
+     *          ),
      *     property="name",
      *     description="Client name",
      *     example="DemoClient"
      * )
-     * @SWG\Property(
-     *     type="string",
+     * @OA\Property(
+     *     @OA\Schema(
+     *        type="string"
+     *     ),
      *     property="redirect",
      *     description="Redirect",
      *     example="http://localhost"
      * )
-     * @SWG\Property(
+     * @OA\Property(
      *     type="boolean",
      *     property="personal_access_client",
      *     description="Client name",
      *     example="true|false",
      * )
-     * @SWG\Property(
+     * @OA\Property(
      *     type="boolean",
      *     property="password_client",
      *     description="client password",
      *     example="true|false",
      * )
-     * @SWG\Property(
+     * @OA\Property(
      *     type="boolean",
      *     property="revoked",
      *     description="Is it revoked",
@@ -452,10 +405,19 @@ class Client
 }
 
 /**
+ * @OA\RequestBody(
+ *      request="Token",
+ *      description="Token",
+ *      required=true,
+ *      @OA\JsonContent(ref="#/components/schemas/Token")
+ * )
+ */
+
+/**
  * @see vendor/laravel/passport/src/Token.php
  *
- * @SWG\Definition(
- *   definition="Token",
+ * @OA\Schema(
+ *   schema="Token",
  *   required={},
  *   type="object"
  * )
@@ -463,7 +425,7 @@ class Client
 class Token {
 
     /**
-     * @SWG\Property(
+     * @OA\Property(
      *     type="integer",
      *     property="id",
      *     description="Id.",
@@ -473,8 +435,10 @@ class Token {
      */
 
     /**
-     * @SWG\Property(
-     *     type="string",
+     * @OA\Property(
+     *          @OA\Schema(
+     *              type="string"
+     *          ),
      *     property="name",
      *     description="",
      *     example="300",
@@ -483,30 +447,30 @@ class Token {
      */
 
     /**
-     * @SWG\Property(
+     * @OA\Property(
      *     type="array",
      *     property="scopes",
      *     description="Requested and allowed scopes",
      *     example="[...]",
      *     readOnly=true,
-     *     @SWG\Items(
+     *     @OA\Items(
      *          type="string"
      *     )
      * )
      */
 
     /**
-     * @SWG\Property(
+     * @OA\Property(
      *     property="client",
      *     type="array",
-     *     @SWG\Items(ref="#/definitions/Client"),
+     *     @OA\Items(ref="#/components/schemas/Client"),
      *     description="",
      *     example="[...]"
      * )
      */
 
     /**
-     * @SWG\Property(
+     * @OA\Property(
      *     type="boolean",
      *     property="revoked",
      *     description="",
@@ -516,7 +480,7 @@ class Token {
      */
 
     /**
-     * @SWG\Property(
+     * @OA\Property(
      *     type="string",
      *     property="created_at",
      *     description="Upload timestamp",
@@ -525,8 +489,8 @@ class Token {
      * )
      */
 
-     /**
-     * @SWG\Property(
+    /**
+     * @OA\Property(
      *     type="string",
      *     property="updated_at",
      *     description="When data updated",
@@ -536,7 +500,7 @@ class Token {
      */
 
     /**
-     * @SWG\Property(
+     * @OA\Property(
      *     type="string",
      *     property="expires_at",
      *     description="Token expiry date",
@@ -546,12 +510,148 @@ class Token {
      */
 
     /**
-     * @SWG\Property(
+     * @OA\Property(
      *     property="user",
      *     type="array",
-     *     @SWG\Items(ref="#/definitions/User"),
+     *     @OA\Items(ref="#/components/schemas/User"),
      *     description="",
      *     example="[...]"
+     * )
+     */
+}
+
+/**
+ * @OA\RequestBody(
+ *      request="ClientRequest",
+ *      description="Client, requires only name and redirect",
+ *      required=true,
+ *      @OA\JsonContent(ref="#/components/schemas/ClientRequest")
+ * )
+ */
+class ClientRequest
+{
+    /**
+     * @OA\Schema(
+     *     schema="ClientRequest",
+     *      @OA\Property(
+     *          property="name",
+     *          type="string",
+     *      ),
+     *      @OA\Property(
+     *          property="redirect",
+     *          type="string",
+     *      )
+     * )
+     */
+}
+
+/**
+ * @OA\RequestBody(
+ *      request="TokenRequest",
+ *      description="Request access token with password or refresh token",
+ *      required=true,
+ *      @OA\JsonContent(ref="#/components/schemas/TokenRequest")
+ * )
+ */
+class TokenRequest
+{
+
+    /**
+     * @OA\Schema(
+     *     schema="TokenRequest",
+     *     title="Token Request",
+     *     description="Request body for requesting access token. Use grant type to define which authentication method is used.",
+     *     required={
+     *          "grant_type",
+     *          "client_id",
+     *          "client_secret",
+     *          "scope",
+     *     },
+     * @OA\Property(
+     *          title="Grant type",
+     *          property="grant_type",
+     *          description="refresh_token or password",
+     *          type="string",
+     *          enum={"refresh_token", "password"}
+     *      ),
+     * @OA\Property(
+     *          title="Client ID",
+     *          property="client_id",
+     *          description="OAuth Client ID",
+     *          type="string"
+     *      ),
+     * @OA\Property(
+     *          title="Client secret",
+     *          property="client_secret",
+     *          description="OAuth Client Secret",
+     *          type="string"
+     *      ),
+     * @OA\Property(
+     *          title="Scope",
+     *          property="scope",
+     *          description="What scopes are requested, for all, use '*'",
+     *          type="string"
+     *      ),
+     * @OA\Property(
+     *          title="Refresh token",
+     *          property="refresh_token",
+     *          description="Refresh_token from the authorization response",
+     *          type="string"
+     *      ),
+     * @OA\Property(
+     *          title="User name",
+     *          property="username",
+     *          description="Username for login",
+     *          type="string"
+     *      ),
+     * @OA\Property(
+     *          title="password",
+     *          property="password",
+     *          description="Password for the user",
+     *          type="string"
+     *      ),
+     *  )
+     */
+}
+
+class TokenResponse
+{
+    /**
+     * @OA\Schema(
+     *     schema="TokenResponse",
+     *     title="Token Response",
+     *     description="Response body when requesting access token.",
+     *     required={
+     *          "token_type",
+     *          "expires_in",
+     *          "access_token",
+     *          "refresh_token",
+     *     },
+     * @OA\Property(
+     *          title="Token type",
+     *          property="token_type",
+     *          description="For example Bearer token type",
+     *          type="string",
+     *          enum={"Bearer"}
+     *      ),
+     * @OA\Property(
+     *          title="Expires in",
+     *          property="expires_in",
+     *          description="Token expires in this many seconds",
+     *          type="string"
+     *      ),
+     * @OA\Property(
+     *          title="Access token",
+     *          property="access_token",
+     *          description="Access token",
+     *          type="string"
+     *      ),
+     * @OA\Property(
+     *          title="Refresh token",
+     *          property="refresh_token",
+     *          description="Token used for refreshing access",
+     *          type="string"
+     *      ),
      * )
      */
 }

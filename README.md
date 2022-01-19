@@ -1,6 +1,6 @@
-# Swagger Annotations for Laravel Passport 4
+# OpenAPI 3.0 Annotations for Laravel Passport 7
 
-For the time being this is a bit untested work for Laravel Passport to get Swagger OAuth definitions done.
+For the time being this is a bit untested work for Laravel Passport to get OpenAPI OAuth definitions done.
 
 Fixes are more than welcome for this :)
 
@@ -10,4 +10,4 @@ Fixes are more than welcome for this :)
 * Copy `LooseAnnotations` dir to your `App` dir
 * Configure l5-swagger package accordingly
 
-Check your generated Swagger API Documentation to see OAuth stuff :)
+Check your generated OpenAPI Documentation to see OAuth stuff :)
